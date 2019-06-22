@@ -390,7 +390,7 @@ def control_structure_iter(cfg, current, parent, parent_kind="sequence"):
         result.append(TestControlStructure(block, children))
         pass
     elif kind == "fallthrough":
-        if follow and current in {node.bb for node in parent.dom_set}:
+        if follow and follow.block in {node.bb for node in current.dom_set}:
             children.append(follow)
             follow = None
             pass
@@ -460,15 +460,16 @@ def control_structure_iter(cfg, current, parent, parent_kind="sequence"):
                     pass
                 else:
                     assert len(jump_block.predecessors) != 0  # this would be dead code
-                    jump_kind = "sequence"
-                    children, follow = control_structure_iter(
-                        cfg, jump_block, current, jump_kind
-                    )
-                    if follow and jump_block.number != follow.block.number:
-                        result[0].children.append(
-                            SequenceControlStructure(jump_block, children)
+                    if not (kind == "test" and follow):
+                        jump_kind = "sequence"
+                        children, follow = control_structure_iter(
+                            cfg, jump_block, current, jump_kind
                         )
-                        pass
+                        if follow and jump_block.number != follow.block.number:
+                            result[0].children.append(
+                                SequenceControlStructure(jump_block, children)
+                            )
+                            pass
             elif kind in ("continue", "try"):
                 pass
                 # Do nothing

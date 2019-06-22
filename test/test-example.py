@@ -19,7 +19,9 @@ total = count = 0
 for filename in files:
 
     # FIXME: redo with import module
-    exec(open(filename).read())
+    source = open(filename).read();
+    exec(source)
+    print("\n", '=' * 20, "\n")
 
     short = osp.basename(filename)[0:-3]
 
