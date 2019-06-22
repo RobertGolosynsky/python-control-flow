@@ -25,11 +25,11 @@ for filename in files:
 
     cs = doit(testing, short)  # NOQA
     got = cs.strip()
-    # want = expect().strip()  # NOQA
-    print("filename %s fails" % filename)
-    if False: # got != want:
-        # print(want)
-        print('-' * 20)
+    want = expect().strip()  # NOQA
+    if got != want:
+        print("\n** filename %s fails **\n" % filename)
+        print(want)
+        print("\n", '-' * 20, "\n")
         print(got)
         pass
         sys.exit(1)
