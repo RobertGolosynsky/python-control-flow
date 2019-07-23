@@ -214,7 +214,7 @@ class BBMgr(object):
       return block, flags, jump_offsets
 
 
-def basic_blocks(version, is_pypy, fn):
+def basic_blocks(version, is_pypy, fn, first_line=None):
     """Create a list of basic blocks found in a code object
     """
 
@@ -223,7 +223,7 @@ def basic_blocks(version, is_pypy, fn):
 
     # Get jump targets
     jump_targets = set()
-    instructions = list(get_instructions(fn))
+    instructions = list(get_instructions(fn, first_line=first_line))
     for inst in instructions:
         op = inst.opcode
         offset = inst.offset
